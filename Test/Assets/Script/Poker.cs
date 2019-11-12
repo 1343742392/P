@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Poker : MonoBehaviour
 {
     [SerializeField] GameObject imgObj;
+    public GameObject player = null;
     // Use this for initialization
     void Start () {
 
@@ -23,10 +24,12 @@ public class Poker : MonoBehaviour
         Animator imgAnim = imgObj.GetComponent<Animator>();
         if (imgAnim.GetCurrentAnimatorStateInfo(0).IsName("pokerUp") && imgAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >=0.99f)
         {
+            player.GetComponent<PokerManage>().rmUpPoker(gameObject);
             imgAnim.Play("pokerInter");
         }
         else
         {
+            player.GetComponent<PokerManage>().addUpPoker(gameObject);
             imgAnim.Play("pokerUp");
         }
         

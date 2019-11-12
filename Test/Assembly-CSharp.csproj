@@ -63,14 +63,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\main.cs" />
+    <Compile Include="Assets\Script\AI.cs" />
     <Compile Include="Assets\Script\AllPoker.cs" />
+    <Compile Include="Assets\Script\ButtonEve.cs" />
+    <Compile Include="Assets\Script\ButtonManage.cs" />
+    <Compile Include="Assets\Script\Judge.cs" />
     <Compile Include="Assets\Script\NewBehaviourScript.cs" />
+    <Compile Include="Assets\Script\obj\Comb.cs" />
     <Compile Include="Assets\Script\Poker.cs" />
     <Compile Include="Assets\Script\PokerAttr.cs" />
     <Compile Include="Assets\Script\PokerManage.cs" />
     <Compile Include="Assets\Script\PokerSort.cs" />
     <Compile Include="Assets\Script\test.cs" />
+    <Compile Include="Assets\Script\TimeManage.cs" />
     <Compile Include="Assets\Script\tool\AddGravity.cs" />
     <Compile Include="Assets\Script\tool\AutoWH.cs" />
     <Compile Include="Assets\Script\tool\MathTool.cs" />

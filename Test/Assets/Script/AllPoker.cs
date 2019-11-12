@@ -2,6 +2,11 @@
 using UnityEngine;
 
 public class AllPoker : MonoBehaviour {
+    [SerializeField] GameObject buttons;
+    int addBackNum = 0;
+    GameObject player1;
+    GameObject player2;
+    GameObject player3;
     public AllPoker()
     {
     }
@@ -33,13 +38,49 @@ public class AllPoker : MonoBehaviour {
             (Poker3[f] as GameObject).GetComponent<Poker>().SetImage(backSprite);
             (Poker3[f] as GameObject).GetComponent<Poker>().DisabledBtn();
         }
-        GameObject.Find("Player1").GetComponent<PokerManage>().addPokers(Poker1, null);
-        GameObject.Find("Player2").GetComponent<PokerManage>().addPokers(Poker2, null);
-        GameObject.Find("Player3").GetComponent<PokerManage>().addPokers(Poker3, null);
+        player1 = GameObject.FindGameObjectWithTag("player1");
+        player2 = GameObject.FindGameObjectWithTag("player2");
+        player3 = GameObject.FindGameObjectWithTag("player3");
+        player1.GetComponent<PokerManage>().addPokers(Poker1, addPokerBack);
+        player2.GetComponent<PokerManage>().addPokers(Poker2, addPokerBack);
+        player3.GetComponent<PokerManage>().addPokers(Poker3, addPokerBack);
+    }
+
+    void addPokerBack()
+    {
+        addBackNum++;
+        if(addBackNum == 3)
+        {
+            string[] s = new string[2];
+            s[0] = "beLandlord";
+            s[1] = "doNot";
+            buttons.GetComponent<ButtonManage>().SetButtons(s, ButtonBack);
+            GameObject.Find("time").GetComponent<TimeManage>().SetTimer(4, landlordTimeout);
+            addBackNum = 0;
+        }
+
+    }
+
+    void ButtonBack(string name)
+    {
+        
+        buttons.GetComponent<ButtonManage>().SetButtons(new string[] { });
+        GameObject.Find("time").GetComponent<TimeManage>().SetTimer(30, outPokerTimeout);
+        player1.GetComponent<PokerManage>().outPokerAble = true;
     }
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    void landlordTimeout()
+    {
+
+    }
+
+    void outPokerTimeout()
+    {
+
+    }
 }
