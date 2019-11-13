@@ -20,6 +20,10 @@ public class PokerSort : IComparer
         }
         else
         {
+            if (a.color > b.color)
+                return 1;
+            else if (a.color < b.color)
+                return -1;
             return 0;
         }
     }

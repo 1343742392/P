@@ -29,6 +29,8 @@ public class Poker : MonoBehaviour
         }
         else
         {
+            if (imgAnim.GetCurrentAnimatorStateInfo(0).IsName("pokerUp"))
+                return;
             player.GetComponent<PokerManage>().addUpPoker(gameObject);
             imgAnim.Play("pokerUp");
         }

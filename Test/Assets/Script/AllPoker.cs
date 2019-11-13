@@ -25,7 +25,7 @@ public class AllPoker : MonoBehaviour {
         ArrayList Poker2 = new ArrayList();
         ArrayList Poker3 = new ArrayList();
         Sprite backSprite = Resources.Load<Sprite>("img/back");
-        for (int f = 0; f < 4; f ++ )
+        for (int f = 0; f < 13; f ++ )
         {
             Poker1.Add(allPoker[Random.Range(0, allPoker.Count)]);
             allPoker.Remove(Poker1[f]);
@@ -46,6 +46,26 @@ public class AllPoker : MonoBehaviour {
         player3.GetComponent<PokerManage>().addPokers(Poker3, addPokerBack);
     }
 
+    public void outPokerEnd(GameObject player)
+    {
+        switch(player.name)
+        {
+            case "Player1":
+                player1.GetComponent<PokerManage>().outPokerAble = false;
+                player2.GetComponent<PokerManage>().outPokerAble = true;
+                break;
+            case "Player2":
+                player2.GetComponent<PokerManage>().outPokerAble = false;
+                player3.GetComponent<PokerManage>().outPokerAble = true;
+                break;
+            case "Player3":
+                player3.GetComponent<PokerManage>().outPokerAble = false;
+                player1.GetComponent<PokerManage>().outPokerAble = true;
+                break;
+        }
+    }
+
+
     void addPokerBack()
     {
         addBackNum++;
@@ -61,12 +81,20 @@ public class AllPoker : MonoBehaviour {
 
     }
 
+
     void ButtonBack(string name)
     {
-        
-        buttons.GetComponent<ButtonManage>().SetButtons(new string[] { });
-        GameObject.Find("time").GetComponent<TimeManage>().SetTimer(30, outPokerTimeout);
-        player1.GetComponent<PokerManage>().outPokerAble = true;
+        switch(name)
+        {
+            case "beLandLord":
+                buttons.GetComponent<ButtonManage>().SetButtons(new string[] { });
+                GameObject.Find("time").GetComponent<TimeManage>().SetTimer(30, outPokerTimeout);
+                player1.GetComponent<PokerManage>().outPokerAble = true;
+                break;
+            default:
+                break;
+        }
+
     }
 	
 	// Update is called once per frame

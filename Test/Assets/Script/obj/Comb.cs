@@ -63,6 +63,7 @@ public class Comb
                 if (pokers[f] != pokers[f + 2] - 1) return PokerType.Without;
             }
         }
+        if (pokers.Count == 4) return PokerType.Without;
         size = pokers[0];
         return PokerType.Double;
     }

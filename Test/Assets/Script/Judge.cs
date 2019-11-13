@@ -5,7 +5,7 @@ using UnityEngine;
 public class Judge : MonoBehaviour
 {
     [SerializeField] int Odds = 4;
-    static Comb beforePoker = new Comb();
+    static  public Comb beforePoker = new Comb();
     // Start is called before the first frame update
     void Start()
     {
@@ -25,10 +25,17 @@ public class Judge : MonoBehaviour
 
     static public bool Legitimate(Comb comb)
     {
-        if (beforePoker.type == Comb.PokerType.Empty)
+        //是否有组合
+        if (comb.type == Comb.PokerType.Without)
+        {
+            return false;
+        }
+        
+        if (beforePoker.type == Comb.PokerType.Empty )
         {
             return true;
         }
+        //和前面的牌比
         if (comb.type == Comb.PokerType.Bomb)
         {
             if(beforePoker.type != Comb.PokerType.Bomb )

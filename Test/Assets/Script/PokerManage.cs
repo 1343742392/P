@@ -12,21 +12,44 @@ public class PokerManage : MonoBehaviour
     [SerializeField] float distance = 225;
     [SerializeField] float outPokerDistance = 100;
     [SerializeField] float outPokerSclae = 0.8f;
+    [SerializeField] GameObject alldPoker;
     ArrayList pokers = new ArrayList();
     ArrayList bufferPokers = new ArrayList();
+    ArrayList upPokers = new ArrayList();
+    ArrayList outPokers = new ArrayList();
     Vector2 center;
     GameObject canvas;
     Animator animatior;
     String animationName;
     int addNum = 0;
     int index = 0;
-    public bool outPokerAble = false;
-    ArrayList upPokers = new ArrayList();
+    public bool outPokerAble
+    {
+        get
+        {
+            return outPokerAble;
+        }
+        set
+        {
+            List<int> pokers = new List<int>();
+            if (gameObject.name != "Player1")
+            {
+                pokers = GetComponent<AI>().OutPoker();
+                if (pokers.Count == 0)
+                {
+                    Judge.beforePoker = new Comb();
+                    alldPoker.GetComponent<AllPoker>().outPokerEnd(gameObject);
+                }
+            }
+            outPokerAble = value;
+        }
+    }
     GameObject buttonMange;
     float pokerWidth = 0;
+
     void Start()
     {
-
+        outPokerAble = false;
         buttonMange = GameObject.Find("Buttons");
         GameObject back =Instantiate(GameObject.Find("back")) as GameObject;
         pokerWidth = back.GetComponent<RectTransform>().rect.width;
@@ -140,13 +163,43 @@ public class PokerManage : MonoBehaviour
     public void addUpPoker(GameObject poker)
     {
         upPokers.Add(poker);
-        buttonMange.GetComponent<ButtonManage>().SetButtons(new string[] {"outPoker", "next" }, outPokerBtnBack);
+        if(outPokerAble) buttonMange.GetComponent<ButtonManage>().SetButtons(new string[] {"outPoker", "next" }, outPokerBtnBack);
 
     }
 
     public void  rmUpPoker(GameObject poker)
     {
         upPokers.Remove(poker);
+    }
+
+    public void RefreshPoker()
+    {
+        float length = pokers.Count;
+        float first = center.x - (Math.Max(0, pokers.Count - 1) * interval) / 2;
+
+        for (int f = 0; f < pokers.Count; f++)
+        {
+            RectTransform rt = (pokers[f] as GameObject).GetComponent<RectTransform>();
+            Vector2 play1Pos = new Vector2(first + f * interval, center.y - distance);
+            Vector2 localFirst = play1Pos - center;
+            //旋转player1位置得到其他player位置
+            switch (gameObject.name)
+            {
+                case "Player1":
+                    rt.position = play1Pos;
+                    break;
+                case "Player2":
+                    Vector3 firstPos = new Vector3(localFirst.x, localFirst.y - 75, 0);
+                    firstPos = MathTool.Rotate(firstPos, Vector3.forward, -90);
+                    rt.position = new Vector2(firstPos.x + center.x, firstPos.y + center.y);
+                    break;
+                default:
+                    Vector3 firstPos2 = new Vector3(localFirst.x, localFirst.y - 75, 0);
+                    firstPos = MathTool.Rotate(firstPos2, Vector3.forward, 90);
+                    rt.position = new Vector2(firstPos.x + center.x, firstPos.y * -1f + center.y);
+                    break;
+            }
+        }
     }
 
     public void outPokerBtnBack(string result)
@@ -163,22 +216,46 @@ public class PokerManage : MonoBehaviour
             Debug.Log("no");
             return;
         }
+        outPokers.AddRange(upPokers);
         switch (gameObject.name)
         {
             case "Player1":
-                float first = center.x - (Math.Max(0, upPokers.Count - 1) * interval * outPokerSclae) / 2;
+                float first1 = center.x - (Math.Max(0, upPokers.Count - 1) * interval * outPokerSclae) / 2;
                 for(int f = 0; f < upPokers.Count; f ++)
                 {
                     RectTransform rt = (upPokers[f] as GameObject).GetComponent<RectTransform>();
-                    rt.position = new Vector2(first + f * interval * outPokerSclae, center.y - outPokerDistance);
+                    rt.position = new Vector2(first1 + f * interval * outPokerSclae, center.y - outPokerDistance);
                     rt.localScale = new Vector2(outPokerSclae, outPokerSclae);
                 }
+
                 break;
             case "Player2":
+                float first2 = center.x - (Math.Max(0, upPokers.Count - 1) * interval * outPokerSclae) / 2;
+                for (int f = 0; f < upPokers.Count; f++)
+                {
+                    RectTransform rt = (upPokers[f] as GameObject).GetComponent<RectTransform>();
+                    Vector3 ps2 = new Vector2(first2 + f * interval * outPokerSclae, center.y - outPokerDistance); 
+                    rt.position = MathTool.Rotate(ps2, Vector3.forward, -90);
+                    rt.localScale = new Vector2(outPokerSclae, outPokerSclae);
+                    pokers.Remove(upPokers[f]);
+                }
                 break;
             case "Player3":
+                float first3 = center.x - (Math.Max(0, upPokers.Count - 1) * interval * outPokerSclae) / 2;
+                for (int f = 0; f < upPokers.Count; f++)
+                {
+                    RectTransform rt = (upPokers[f] as GameObject).GetComponent<RectTransform>();
+                    Vector3 ps3 = new Vector2(first3 + f * interval * outPokerSclae, center.y - outPokerDistance);
+                    rt.position = MathTool.Rotate(ps3, Vector3.forward, 90);
+                    rt.localScale = new Vector2(outPokerSclae, outPokerSclae);
+                    pokers.Remove(upPokers[f]);
+                }
                 break;
         }
+        Judge.beforePoker = c;
+        alldPoker.GetComponent<AllPoker>().outPokerEnd(gameObject);
+        RefreshPoker();
+        upPokers.RemoveRange(0, upPokers.Count);
     }
 
 

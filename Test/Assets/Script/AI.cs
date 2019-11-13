@@ -17,8 +17,10 @@ public class AI : MonoBehaviour
         
     }
 
-    public void AddPokerEnd()
+    public List<int> OutPoker()
     {
+        List<int> result = new List<int>();
 
+        return result;
     }
 }
