@@ -23,27 +23,7 @@ public class PokerManage : MonoBehaviour
     String animationName;
     int addNum = 0;
     int index = 0;
-    public bool outPokerAble
-    {
-        get
-        {
-            return outPokerAble;
-        }
-        set
-        {
-            List<int> pokers = new List<int>();
-            if (gameObject.name != "Player1")
-            {
-                pokers = GetComponent<AI>().OutPoker();
-                if (pokers.Count == 0)
-                {
-                    Judge.beforePoker = new Comb();
-                    alldPoker.GetComponent<AllPoker>().outPokerEnd(gameObject);
-                }
-            }
-            outPokerAble = value;
-        }
-    }
+    public bool outPokerAble = false;
     GameObject buttonMange;
     float pokerWidth = 0;
 
@@ -226,6 +206,7 @@ public class PokerManage : MonoBehaviour
                     RectTransform rt = (upPokers[f] as GameObject).GetComponent<RectTransform>();
                     rt.position = new Vector2(first1 + f * interval * outPokerSclae, center.y - outPokerDistance);
                     rt.localScale = new Vector2(outPokerSclae, outPokerSclae);
+                    pokers.Remove(upPokers[f]);
                 }
 
                 break;
@@ -254,8 +235,9 @@ public class PokerManage : MonoBehaviour
         }
         Judge.beforePoker = c;
         alldPoker.GetComponent<AllPoker>().outPokerEnd(gameObject);
-        RefreshPoker();
         upPokers.RemoveRange(0, upPokers.Count);
+        RefreshPoker();
+
     }
 
 

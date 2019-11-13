@@ -86,7 +86,7 @@ public class AllPoker : MonoBehaviour {
     {
         switch(name)
         {
-            case "beLandLord":
+            case "beLandlord":
                 buttons.GetComponent<ButtonManage>().SetButtons(new string[] { });
                 GameObject.Find("time").GetComponent<TimeManage>().SetTimer(30, outPokerTimeout);
                 player1.GetComponent<PokerManage>().outPokerAble = true;
@@ -94,6 +94,7 @@ public class AllPoker : MonoBehaviour {
             default:
                 break;
         }
+        buttons.GetComponent<ButtonManage>().SetButtons(new string[] { });
 
     }
 	

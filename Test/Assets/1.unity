@@ -2861,7 +2861,8 @@ MonoBehaviour:
   distance: 300
   outPokerDistance: 100
   outPokerSclae: 0.8
-  alldPoker: {fileID: 0}
+  alldPoker: {fileID: 2083999841}
+  outPokerAble: 0
 --- !u!4 &377537241
 Transform:
   m_ObjectHideFlags: 0
@@ -3071,7 +3072,8 @@ MonoBehaviour:
   distance: 300
   outPokerDistance: 100
   outPokerSclae: 0.8
-  alldPoker: {fileID: 0}
+  alldPoker: {fileID: 2083999841}
+  outPokerAble: 0
 --- !u!4 &414030397
 Transform:
   m_ObjectHideFlags: 0
@@ -12831,7 +12833,8 @@ MonoBehaviour:
   distance: 300
   outPokerDistance: 150
   outPokerSclae: 0.8
-  alldPoker: {fileID: 0}
+  alldPoker: {fileID: 2083999841}
+  outPokerAble: 0
 --- !u!4 &1924630337
 Transform:
   m_ObjectHideFlags: 0
