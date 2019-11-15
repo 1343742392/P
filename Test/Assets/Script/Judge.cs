@@ -25,13 +25,22 @@ public class Judge : MonoBehaviour
 
     static public bool Legitimate(Comb comb)
     {
+
         //是否有组合
         if (comb.type == Comb.PokerType.Without)
         {
             return false;
         }
-        
-        if (beforePoker.type == Comb.PokerType.Empty )
+
+        GameObject[] player = new GameObject[] {GameObject.FindWithTag("player1"),
+            GameObject.FindWithTag("player2"),
+            GameObject.FindWithTag("player3")};
+        int index = 0;
+        foreach (GameObject g in player)
+        {
+            if (g.GetComponent<PokerManage>().mIsNext) index++;
+        }
+        if (beforePoker.type == Comb.PokerType.Empty || index == 2)
         {
             return true;
         }
@@ -49,7 +58,7 @@ public class Judge : MonoBehaviour
             return true;
         }
 
-        if(beforePoker.length == comb.size && comb.size > beforePoker.size && comb.type == beforePoker.type)
+        if(beforePoker.length == comb.length && comb.size > beforePoker.size && comb.type == beforePoker.type)
         {
             return true;
         }

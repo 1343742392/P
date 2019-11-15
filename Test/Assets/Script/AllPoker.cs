@@ -1,12 +1,17 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AllPoker : MonoBehaviour {
     [SerializeField] GameObject buttons;
+    [SerializeField] GameObject chapter = null;
+    public float theyPokerScale = 0.6f;
     int addBackNum = 0;
     GameObject player1;
     GameObject player2;
     GameObject player3;
+    public ArrayList allPoker;
     public AllPoker()
     {
     }
@@ -15,7 +20,7 @@ public class AllPoker : MonoBehaviour {
     void Start () {
         //获取所有扑克 按随机数分成3分 其他游戏者更换贴图 去除button 各自分发出去
         GameObject []gameObject = GameObject.FindGameObjectsWithTag("poker");
-        ArrayList allPoker = new ArrayList();
+        allPoker = new ArrayList();
         for(int f = 0; f < gameObject.Length; f ++)
         {
             allPoker.Add(gameObject[f]);
@@ -25,7 +30,7 @@ public class AllPoker : MonoBehaviour {
         ArrayList Poker2 = new ArrayList();
         ArrayList Poker3 = new ArrayList();
         Sprite backSprite = Resources.Load<Sprite>("img/back");
-        for (int f = 0; f < 13; f ++ )
+        for (int f = 0; f < 17; f ++ )
         {
             Poker1.Add(allPoker[Random.Range(0, allPoker.Count)]);
             allPoker.Remove(Poker1[f]);
@@ -33,10 +38,12 @@ public class AllPoker : MonoBehaviour {
             allPoker.Remove(Poker2[f]);
             (Poker2[f] as GameObject).GetComponent<Poker>().SetImage(backSprite);
             (Poker2[f] as GameObject).GetComponent<Poker>().DisabledBtn();
+            (Poker2[f] as GameObject).GetComponent<RectTransform>().localScale = new Vector3(theyPokerScale, theyPokerScale);
             Poker3.Add(allPoker[Random.Range(0, allPoker.Count)]);
             allPoker.Remove(Poker3[f]);
             (Poker3[f] as GameObject).GetComponent<Poker>().SetImage(backSprite);
             (Poker3[f] as GameObject).GetComponent<Poker>().DisabledBtn();
+            (Poker3[f] as GameObject).GetComponent<RectTransform>().localScale = new Vector3(theyPokerScale, theyPokerScale);
         }
         player1 = GameObject.FindGameObjectWithTag("player1");
         player2 = GameObject.FindGameObjectWithTag("player2");
@@ -53,10 +60,12 @@ public class AllPoker : MonoBehaviour {
             case "Player1":
                 player1.GetComponent<PokerManage>().outPokerAble = false;
                 player2.GetComponent<PokerManage>().outPokerAble = true;
+                player2.GetComponent<AI>().OutPoker();
                 break;
             case "Player2":
                 player2.GetComponent<PokerManage>().outPokerAble = false;
                 player3.GetComponent<PokerManage>().outPokerAble = true;
+                player3.GetComponent<AI>().OutPoker();
                 break;
             case "Player3":
                 player3.GetComponent<PokerManage>().outPokerAble = false;
@@ -72,8 +81,8 @@ public class AllPoker : MonoBehaviour {
         if(addBackNum == 3)
         {
             string[] s = new string[2];
-            s[0] = "beLandlord";
-            s[1] = "doNot";
+            s[0] = ButtonManage.ButtonNames.BeLandlord;
+            s[1] = ButtonManage.ButtonNames.DoNot;
             buttons.GetComponent<ButtonManage>().SetButtons(s, ButtonBack);
             GameObject.Find("time").GetComponent<TimeManage>().SetTimer(4, landlordTimeout);
             addBackNum = 0;
@@ -86,12 +95,22 @@ public class AllPoker : MonoBehaviour {
     {
         switch(name)
         {
-            case "beLandlord":
+            case ButtonManage.ButtonNames.BeLandlord:
                 buttons.GetComponent<ButtonManage>().SetButtons(new string[] { });
                 GameObject.Find("time").GetComponent<TimeManage>().SetTimer(30, outPokerTimeout);
                 player1.GetComponent<PokerManage>().outPokerAble = true;
+                chapter.transform.parent.transform.position = gameObject.transform.position + new Vector3(0, 200, 0);
+                chapter.GetComponent<Animator>().Play("toPlayer1");
+                ArrayList ps = new ArrayList();
+                ps.Add(allPoker[Random.Range(0, allPoker.Count)]);
+                allPoker.Remove(ps[0]);
+                ps.Add(allPoker[Random.Range(0, allPoker.Count)]);
+                allPoker.Remove(ps[1]);
+                ps.Add(allPoker[0]);
+                allPoker.RemoveAt(0);
+                player1.GetComponent<PokerManage>().addPokers(ps);
                 break;
-            default:
+            default: 
                 break;
         }
         buttons.GetComponent<ButtonManage>().SetButtons(new string[] { });

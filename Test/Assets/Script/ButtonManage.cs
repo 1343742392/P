@@ -9,6 +9,13 @@ public class ButtonManage : MonoBehaviour
     ArrayList buttons = new ArrayList();
     Action<string> back = null;
     [SerializeField] float interval = 50;
+    public class ButtonNames { 
+        public const  string ShowPoker = "showPoker";
+        public const string BeLandlord = "beLandlord";
+        public const string DoNot = "doNot";
+        public const string OutPoker = "outPoker";
+        public const string Next = "next";
+    }
     void Start()
     {
         

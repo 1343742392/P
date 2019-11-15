@@ -15,14 +15,16 @@ public class NewBehaviourScript : MonoBehaviour
     [SerializeField] int length = 6;
     void Start()
     {
-        List<int> ls = new List<int>();
-        ls.Add(one);
-        ls.Add(two);
-        ls.Add(three);
-        ls.Add(four);
-        ls.Add(five);
-        ls.Add(six);
-        Debug.Log(new Comb(ls.GetRange(0, length)).ToString());
+        /*        List<int> ls = new List<int>();
+                ls.Add(one);
+                ls.Add(two);
+                ls.Add(three);
+                ls.Add(four);
+                ls.Add(five);
+                ls.Add(six);
+                Debug.Log(new Comb(ls.GetRange(0, length)).ToString());*/
+        Sprite s = Resources.Load<Sprite>("img\\allPoker2");
+        Debug.Log(s == null);
     }
 
     // Update is called once per frame
