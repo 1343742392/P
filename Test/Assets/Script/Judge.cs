@@ -23,6 +23,24 @@ public class Judge : MonoBehaviour
         Odds *= value;
     }
 
+    public static bool HaveOutPoker()
+    {
+        GameObject[] player = new GameObject[] {GameObject.FindWithTag("player1"),
+        GameObject.FindWithTag("player2"),
+        GameObject.FindWithTag("player3")};
+        int index = 0;
+        foreach (GameObject g in player)
+        {
+            if (g.GetComponent<PokerManage>().mIsNext) index++;
+        }
+        //Debug.Log("index:" + index);
+        if(index >=2 )
+        {
+            return false;
+        }
+        return true;
+    }
+
     static public bool Legitimate(Comb comb)
     {
 
@@ -32,15 +50,8 @@ public class Judge : MonoBehaviour
             return false;
         }
 
-        GameObject[] player = new GameObject[] {GameObject.FindWithTag("player1"),
-            GameObject.FindWithTag("player2"),
-            GameObject.FindWithTag("player3")};
-        int index = 0;
-        foreach (GameObject g in player)
-        {
-            if (g.GetComponent<PokerManage>().mIsNext) index++;
-        }
-        if (beforePoker.type == Comb.PokerType.Empty || index == 2)
+        
+        if (beforePoker.type == Comb.PokerType.Empty || !HaveOutPoker())
         {
             return true;
         }

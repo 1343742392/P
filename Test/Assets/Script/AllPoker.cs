@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class AllPoker : MonoBehaviour {
@@ -36,13 +37,13 @@ public class AllPoker : MonoBehaviour {
             allPoker.Remove(Poker1[f]);
             Poker2.Add(allPoker[Random.Range(0, allPoker.Count)]);
             allPoker.Remove(Poker2[f]);
-            (Poker2[f] as GameObject).GetComponent<Poker>().SetImage(backSprite);
-            (Poker2[f] as GameObject).GetComponent<Poker>().DisabledBtn();
+            (Poker2[f] as GameObject).GetComponent<Poker>().Turn();
+            (Poker2[f] as GameObject).GetComponent<Poker>().ClickAble(false);
             (Poker2[f] as GameObject).GetComponent<RectTransform>().localScale = new Vector3(theyPokerScale, theyPokerScale);
             Poker3.Add(allPoker[Random.Range(0, allPoker.Count)]);
             allPoker.Remove(Poker3[f]);
-            (Poker3[f] as GameObject).GetComponent<Poker>().SetImage(backSprite);
-            (Poker3[f] as GameObject).GetComponent<Poker>().DisabledBtn();
+            (Poker3[f] as GameObject).GetComponent<Poker>().Turn();
+            (Poker3[f] as GameObject).GetComponent<Poker>().ClickAble(false) ;
             (Poker3[f] as GameObject).GetComponent<RectTransform>().localScale = new Vector3(theyPokerScale, theyPokerScale);
         }
         player1 = GameObject.FindGameObjectWithTag("player1");
@@ -70,6 +71,13 @@ public class AllPoker : MonoBehaviour {
             case "Player3":
                 player3.GetComponent<PokerManage>().outPokerAble = false;
                 player1.GetComponent<PokerManage>().outPokerAble = true;
+                TimeManage.SetTimer(30, delegate () 
+                { 
+                    
+                    player1.GetComponent<PokerManage>().mIsNext = true;
+                    Sprite s = Resources.Load<Sprite>("img/next");
+                    ShowWord.Say(new Vector3(0, -50, 0), s, delegate() { outPokerEnd(player1); });
+                });
                 break;
         }
     }
@@ -84,7 +92,7 @@ public class AllPoker : MonoBehaviour {
             s[0] = ButtonManage.ButtonNames.BeLandlord;
             s[1] = ButtonManage.ButtonNames.DoNot;
             buttons.GetComponent<ButtonManage>().SetButtons(s, ButtonBack);
-            GameObject.Find("time").GetComponent<TimeManage>().SetTimer(4, landlordTimeout);
+            TimeManage.SetTimer(4, landlordTimeout);
             addBackNum = 0;
         }
 
@@ -96,8 +104,8 @@ public class AllPoker : MonoBehaviour {
         switch(name)
         {
             case ButtonManage.ButtonNames.BeLandlord:
-                buttons.GetComponent<ButtonManage>().SetButtons(new string[] { });
-                GameObject.Find("time").GetComponent<TimeManage>().SetTimer(30, outPokerTimeout);
+                buttons.GetComponent<ButtonManage>().SetButtons(new string[] {});
+                TimeManage.SetTimer(30, outPokerTimeout);
                 player1.GetComponent<PokerManage>().outPokerAble = true;
                 chapter.transform.parent.transform.position = gameObject.transform.position + new Vector3(0, 200, 0);
                 chapter.GetComponent<Animator>().Play("toPlayer1");
@@ -110,6 +118,10 @@ public class AllPoker : MonoBehaviour {
                 allPoker.RemoveAt(0);
                 player1.GetComponent<PokerManage>().addPokers(ps);
                 break;
+            case ButtonManage.ButtonNames.DoNot:
+                
+                SceneManager.LoadScene("1");
+                    break;
             default: 
                 break;
         }

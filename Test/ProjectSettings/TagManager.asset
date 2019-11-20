@@ -12,6 +12,7 @@ TagManager:
   - text
   - canvas
   - texts
+  - back
   layers:
   - Default
   - TransparentFX

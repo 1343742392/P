@@ -13,9 +13,45 @@ public class Comb
     public int length;
 
     public int size;
+
+    public ArrayList pokers = new ArrayList();
     public Comb() { type = PokerType.Empty; }
+
+    public Comb(ArrayList intPokers)
+    {
+        List<int> pokers = new List<int>();
+        int intpLenght = intPokers.Count;
+        for (int f = 0; f < intpLenght; f++)
+        {
+            pokers.Add((intPokers[f] as GameObject).GetComponent<PokerAttr>().size);
+        }
+
+        this.pokers.AddRange(pokers);
+        length = pokers.Count;
+        if (length == 1)
+        {
+            size = pokers[0];
+            type = PokerType.Single;
+            return;
+        }
+        type = IsSingle(pokers);
+        if (type != PokerType.Without) return;
+        type = IsDouble(pokers);
+        if (type != PokerType.Without) return;
+        type = IsThree(pokers);
+        if (type != PokerType.Without) return;
+        type = IsFour(pokers);
+        if (type != PokerType.Without) return;
+        if (pokers[0] == 16 && pokers[17] == 17)
+        {
+            type = PokerType.Bomb;
+            size = 16;
+            return;
+        }
+    }
     public Comb(List<int> pokers)
     {
+        this.pokers.AddRange(pokers);
         length = pokers.Count;
         if(length == 1)
         {
@@ -31,6 +67,12 @@ public class Comb
         if (type != PokerType.Without) return;
         type = IsFour(pokers);
         if (type != PokerType.Without) return;
+        if(pokers[0] ==  16 && pokers[17] == 17)
+        {
+            type = PokerType.Bomb;
+            size = 16;
+            return;
+        }
     }
 
 
@@ -141,7 +183,8 @@ public class Comb
             {
                 return PokerType.Without;
             }
-            if(pokers[0] == pokers[1] && pokers[1] == pokers[2] && pokers[2] == pokers[3] && pokers[4] == pokers[5])
+            //aaaabc
+            if (pokers[0] == pokers[1] && pokers[1] == pokers[2] && pokers[2] == pokers[3] && pokers[4] == pokers[5])
             {
                 size = pokers[0];
                 return PokerType.FourAndTwo;
@@ -155,6 +198,7 @@ public class Comb
         }
         for(int f = 0; f < pokers.Count/4; f ++)
         {
+            //aaaabbbb...
             int first = f * 4;
             if(pokers[first] != pokers[first + 1] && pokers[first + 1] != pokers[first + 2] && pokers[first + 2] != pokers[first + 3])
             {
@@ -169,8 +213,14 @@ public class Comb
                 return PokerType.Without;
             }
         }
+        if(pokers[0] != pokers[1] || pokers[1] != pokers[2] || pokers[2] != pokers[3])
+        {
+            //去掉aabb
+            return PokerType.Without;
+        }
         if (pokers.Count == 4)
         {
+            //炸弹
             size = pokers[0];
             return PokerType.Bomb;
         }

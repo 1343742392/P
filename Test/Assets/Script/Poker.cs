@@ -8,6 +8,10 @@ public class Poker : MonoBehaviour
 {
     [SerializeField] GameObject imgObj;
     public GameObject player = null;
+
+    bool mClickAble = true;
+    private Sprite mBackup;
+
     // Use this for initialization
     void Start () {
 
@@ -21,6 +25,7 @@ public class Poker : MonoBehaviour
 
     public void OnClick()
     {
+        if (!mClickAble) return;
         Animator imgAnim = imgObj.GetComponent<Animator>();
         if (imgAnim.GetCurrentAnimatorStateInfo(0).IsName("pokerUp") && imgAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >=0.99f)
         {
@@ -50,8 +55,25 @@ public class Poker : MonoBehaviour
 
     }
 
-    public void DisabledBtn()
+    public void Turn()
     {
-        Object.Destroy(imgObj.GetComponent<Button>());
+        Sprite back = GameObject.FindWithTag("back").GetComponent<Image>().sprite;
+        Image nowImg = imgObj.GetComponent<Image>();
+        if(nowImg.sprite == back)
+        {
+            nowImg.sprite = mBackup;
+        }
+        else
+        {
+            mBackup = nowImg.sprite;
+            nowImg.sprite = back;
+        }
     }
+
+    public void ClickAble(bool value)
+    {
+        imgObj.GetComponent<Button>().interactable = value;
+        mClickAble = value;
+    }
+
 }

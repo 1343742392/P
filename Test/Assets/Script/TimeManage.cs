@@ -6,10 +6,11 @@ using UnityEngine.UI;
 
 public class TimeManage : MonoBehaviour
 {
-    int time = 0;
-    long startTime = 0;
-    Action back = null;
-    Text text;
+    static int time = 0;
+    static long startTime = 0;
+    static Action back = null;
+    static Text text = null;
+    public static bool mShowText = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,8 +20,13 @@ public class TimeManage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(time > 0)
+        if(time > 0 )
         {
+            if(!mShowText)
+            {
+                text.text = "";
+                return;
+            }
             int loseTime = (int)(GetTimeStamp() - startTime);
             int reult = time - loseTime;
             text.text = reult + "";
@@ -31,17 +37,19 @@ public class TimeManage : MonoBehaviour
                 if(back != null)back();
             }
         }
+        
     }
-    public long GetTimeStamp()
+    public static long GetTimeStamp()
     {
         TimeSpan ts = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
         return Convert.ToInt64(ts.TotalSeconds);
     }
-    public void SetTimer(int time, Action timeoutBack = null)
+    public static void SetTimer(int time, Action timeoutBack = null)
     {
-        this.time = time;
-        this.back = timeoutBack;
-        this.startTime = GetTimeStamp();
+        mShowText = true;
+        TimeManage.time = time;
+        TimeManage.back = timeoutBack;
+        TimeManage.startTime = GetTimeStamp();
         text.text = time + "";
     }
 }
