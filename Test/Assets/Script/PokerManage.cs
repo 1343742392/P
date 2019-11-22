@@ -163,6 +163,17 @@ public class PokerManage : MonoBehaviour
         }
     }
 
+    public bool HaveUpPoker()
+    {
+        if(upPokers.Count > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     public void addUpPoker(GameObject poker)
     {
         upPokers.Add(poker);
@@ -299,6 +310,15 @@ public class PokerManage : MonoBehaviour
                 break;
         }
         TimeManage.mShowText = false;
+
+        if(this.pokers.Count == 0)
+        {
+            for(int f = 0; f <this.pokers.Count; f ++)
+            {
+                (this.pokers[f] as GameObject).GetComponent<Poker>().ClickAble(false);
+            }
+            alldPoker.GetComponent<AllPoker>().End(gameObject);
+        }
 
     }
 

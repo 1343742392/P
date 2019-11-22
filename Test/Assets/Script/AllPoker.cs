@@ -13,6 +13,10 @@ public class AllPoker : MonoBehaviour {
     GameObject player2;
     GameObject player3;
     public ArrayList allPoker;
+    public int bottonMoney = 10;
+
+
+    bool isEnd = false;
     public AllPoker()
     {
     }
@@ -31,7 +35,7 @@ public class AllPoker : MonoBehaviour {
         ArrayList Poker2 = new ArrayList();
         ArrayList Poker3 = new ArrayList();
         Sprite backSprite = Resources.Load<Sprite>("img/back");
-        for (int f = 0; f < 17; f ++ )
+        for (int f = 0; f < 5; f ++ )
         {
             Poker1.Add(allPoker[Random.Range(0, allPoker.Count)]);
             allPoker.Remove(Poker1[f]);
@@ -56,6 +60,7 @@ public class AllPoker : MonoBehaviour {
 
     public void outPokerEnd(GameObject player)
     {
+        if (isEnd) return;
         switch(player.name)
         {
             case "Player1":
@@ -71,9 +76,24 @@ public class AllPoker : MonoBehaviour {
             case "Player3":
                 player3.GetComponent<PokerManage>().outPokerAble = false;
                 player1.GetComponent<PokerManage>().outPokerAble = true;
+                string[] buts = null;
+                if(player1.GetComponent<PokerManage>().HaveUpPoker())
+                {
+                    buts = new string[] { ButtonManage.ButtonNames.OutPoker, ButtonManage.ButtonNames.Next };
+                }
+                else
+                {
+                    buts = new string[] {ButtonManage.ButtonNames.Next };
+                }
+                buttons.GetComponent<ButtonManage>().SetButtons(buts, delegate(string result)
+                {
+                    buttons.GetComponent<ButtonManage>().SetButtons(new string[] { });
+                    player1.GetComponent<PokerManage>().mIsNext = true;
+                    Sprite s = Resources.Load<Sprite>("img/next");
+                    ShowWord.Say(new Vector3(0, -50, 0), s, delegate () { outPokerEnd(player1); });
+                });
                 TimeManage.SetTimer(30, delegate () 
                 { 
-                    
                     player1.GetComponent<PokerManage>().mIsNext = true;
                     Sprite s = Resources.Load<Sprite>("img/next");
                     ShowWord.Say(new Vector3(0, -50, 0), s, delegate() { outPokerEnd(player1); });
@@ -104,6 +124,7 @@ public class AllPoker : MonoBehaviour {
         switch(name)
         {
             case ButtonManage.ButtonNames.BeLandlord:
+                Judge.AddOdds(2);
                 buttons.GetComponent<ButtonManage>().SetButtons(new string[] {});
                 TimeManage.SetTimer(30, outPokerTimeout);
                 player1.GetComponent<PokerManage>().outPokerAble = true;
@@ -142,5 +163,49 @@ public class AllPoker : MonoBehaviour {
     void outPokerTimeout()
     {
 
+    }
+
+    public void End(GameObject g)
+    {
+        isEnd = true;
+        
+        player1.GetComponent<PokerManage>().outPokerAble = false;
+        player2.GetComponent<PokerManage>().outPokerAble = false;
+        player3.GetComponent<PokerManage>().outPokerAble = false;
+
+        buttons.GetComponent<ButtonManage>().SetButtons(new string[] { });
+
+        GameObject canvas = GameObject.FindWithTag("canvas");
+        Vector2 center = new Vector2(canvas.GetComponent<RectTransform>().rect.width / 2, canvas.GetComponent<RectTransform>().rect.height / 2 + 50f);
+        if (g.name == "Player1")
+        {
+            GameObject.Find("GameResult").transform.position = center;
+
+            GameObject oddg = GameObject.Find("odds");
+            GameObject money = GameObject.Find("money");
+            money.GetComponent<Text>().text = "+  " + bottonMoney * Judge.GetOdds() + "";
+            oddg.GetComponent<Text>().text = Judge.GetOdds() + "";
+        }
+        else
+        {
+            GameObject gr = GameObject.Find("GameResult");
+            gr.GetComponent<Image>().sprite = Resources.Load<Sprite>("img/fail");
+            gr.transform.position = center;
+
+            GameObject oddg = GameObject.Find("odds");
+            GameObject money = GameObject.Find("money");
+            money.GetComponent<Text>().text = "-  " + bottonMoney * Judge.GetOdds() + "";
+            oddg.GetComponent<Text>().text = Judge.GetOdds() + "";
+        }
+    }
+
+    public void RePlaye()
+    {
+        SceneManager.LoadScene("1");
+    }
+
+    public void SignOut()
+    {
+        SceneManager.LoadScene("Start");
     }
 }

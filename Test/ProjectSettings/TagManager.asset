@@ -13,6 +13,7 @@ TagManager:
   - canvas
   - texts
   - back
+  - test
   layers:
   - Default
   - TransparentFX

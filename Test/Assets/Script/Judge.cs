@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Judge : MonoBehaviour
 {
-    [SerializeField] int Odds = 4;
+    [SerializeField] static int Odds = 4;
     static  public Comb beforePoker = new Comb();
     // Start is called before the first frame update
     void Start()
@@ -17,10 +18,15 @@ public class Judge : MonoBehaviour
     {
         
     }
+    static public int GetOdds()
+    {
+        return Odds;
+    }
 
-    public void AddOdds(int value)
+    static public void AddOdds(int value)
     {
         Odds *= value;
+        GameObject.Find("OddValue").GetComponent<Text>().text = Odds + "";
     }
 
     public static bool HaveOutPoker()

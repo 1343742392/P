@@ -63,7 +63,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CloseGame.cs" />
     <Compile Include="Assets\NewBehaviourScript.cs" />
+    <Compile Include="Assets\OutSide.cs" />
     <Compile Include="Assets\Script\AI.cs" />
     <Compile Include="Assets\Script\AllPoker.cs" />
     <Compile Include="Assets\Script\AnimaEvent.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Assets\Script\tool\CallBack.cs" />
     <Compile Include="Assets\Script\tool\MathTool.cs" />
     <Compile Include="Assets\Script\tool\ShowWord.cs" />
+    <Compile Include="Assets\StartGame.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>E:/MyFile/Code/Unity/P/Test/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

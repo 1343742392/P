@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ButtonEve : MonoBehaviour
 {
@@ -13,7 +15,6 @@ public class ButtonEve : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
 
     public void OnClick()

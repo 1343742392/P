@@ -23,7 +23,23 @@ public class Poker : MonoBehaviour
 		
 	}
 
-    public void OnClick()
+    public void OnMouseDw()
+    {
+        Debug.Log("down");
+        Response();
+    }
+
+    public void OnMouseInter()
+    {
+        Debug.Log(Input.GetMouseButton(0));
+        if (Input.GetMouseButton(0))
+        {
+            Debug.Log("inter");
+            Response();
+
+        }
+    }
+    public void Response()
     {
         if (!mClickAble) return;
         Animator imgAnim = imgObj.GetComponent<Animator>();
@@ -72,7 +88,6 @@ public class Poker : MonoBehaviour
 
     public void ClickAble(bool value)
     {
-        imgObj.GetComponent<Button>().interactable = value;
         mClickAble = value;
     }
 
